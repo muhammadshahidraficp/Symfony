@@ -32,13 +32,15 @@ class LuckyController extends AbstractController
     {
         
         $request_data = $request->request->all();
-        print_r($request_data);
-        if(isset($request_data['email']) && isset($request_data['name']))
+        //print_r($request_data);
+        if(isset($request_data['email']) && isset($request_data['name']) && isset($request_data['mobile']) && isset($request_data['password']))
         //print_r($request_data);
         {
           $email = $request_data['email'];
           $name = $request_data['name'];
-          echo $email;
+          $mobile = $request_data['mobile'];
+          $password = $request_data['password'];
+          //echo $email;
         
 
         // you can fetch the EntityManager via $this->getDoctrine()
@@ -50,6 +52,8 @@ class LuckyController extends AbstractController
 
         $user->setEmail($email);
         $user->setName($name);
+        $user->setPassword($password);
+        $user->setMobile($mobile);
 
 
         // tell Doctrine you want to (eventually) save the Product (no queries yet)
@@ -59,7 +63,6 @@ class LuckyController extends AbstractController
         $entityManager->flush();
         return $this->redirectToRoute('success');
       }
-
         //$posts = $entityManager->getRepository('App:UserRegister')->findAll();
 
         //print_r($posts);
@@ -69,6 +72,27 @@ class LuckyController extends AbstractController
 
     }
 
+
+    /**
+     * @Route("/login")
+     */
+    public function login(Request $request)
+    {
+      $request_data = $request->request->all();
+      if(isset($request_data['email']) && isset($request_data['password'])){
+      $email = $request_data['email'];
+      $password = $request_data['password'];
+      //print_r($request_data);
+      $logindata = $this->getDoctrine()->getRepository('App:UserRegister')->findOneBy(['email'=>$email,'password'=>$password]);
+      if(isset($logindata)){
+        return $this->render('home/home.html.twig');  
+      }
+      else{
+       return $this->render('lucky/number.html.twig'); 
+      }
+    }
+
+}
 }
 
 
