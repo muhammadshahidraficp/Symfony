@@ -26,7 +26,7 @@ class LuckyController extends AbstractController
     }
 
     /**
-     * @Route("/register")
+     * @Route("/register", name="signup")
      */
     public function register(Request $request)
     {
@@ -41,7 +41,7 @@ class LuckyController extends AbstractController
           $mobile = $request_data['mobile'];
           $password = $request_data['password'];
           //echo $email;
-        
+          $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
         // you can fetch the EntityManager via $this->getDoctrine()
         // or you can add an argument to your action: index(EntityManagerInterface $entityManager)
@@ -49,10 +49,10 @@ class LuckyController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
 
         $user = new UserRegister();
-
         $user->setEmail($email);
         $user->setName($name);
         $user->setPassword($password);
+        //$user->setPassword($hashed_password);
         $user->setMobile($mobile);
 
 
@@ -74,7 +74,7 @@ class LuckyController extends AbstractController
 
 
     /**
-     * @Route("/login")
+     * @Route("/login", name="login")
      */
     public function login(Request $request)
     {
@@ -82,6 +82,7 @@ class LuckyController extends AbstractController
       if(isset($request_data['email']) && isset($request_data['password'])){
       $email = $request_data['email'];
       $password = $request_data['password'];
+
       //print_r($request_data);
       $logindata = $this->getDoctrine()->getRepository('App:UserRegister')->findOneBy(['email'=>$email,'password'=>$password]);
       if(isset($logindata)){
@@ -91,6 +92,7 @@ class LuckyController extends AbstractController
        return $this->render('lucky/number.html.twig'); 
       }
     }
+    return $this->render('lucky/number.html.twig'); 
 
 }
 }
