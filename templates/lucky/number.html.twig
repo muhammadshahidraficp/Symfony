@@ -1,4 +1,41 @@
-<head>
+{% extends 'base.html.twig' %}
+{% block javascripts %} 
+   <script language = "javascript" src = "https://code.jquery.com/jquery-2.2.4.min.js"></script>
+   <script type="text/javascript">
+
+   $("#email").blur(function () 
+    {  
+        var email = $("#email").val();
+        if(email)
+            {
+                $.ajax({
+                type: 'post',
+                dataType:'json',
+                url: 'validate',
+                data: {
+                    email:email
+                    //mobile:mobile
+                },
+                success: function (response) {
+                    var flag=response.exist;
+                    
+                    if(flag==1){
+                        $('#email').css('color', 'green');
+                        
+
+                    }
+                    else{
+                        $('#email').css('color', 'red');
+                        
+                    }
+            }
+        });
+        }
+    });
+   </script>
+{% endblock %}
+
+{% block stylesheets %}
 <style>
 /* Bordered form */
 form {
@@ -70,32 +107,33 @@ span.psw {
   .cancelbtn {
     width: 100%;
   }
+  #emailerror{
+    font-size: 8px;
+    color:green;
+  }
 }
 
 </style>
-</head>
+{% endblock %}
 
-
+{% block body %}
 
 <form action="login" method="post">
 
   <div class="container">
-    <label for="uname"><b>Username</b></label>
-    <input type="text" placeholder="Enter Email" name="email" required>
+    <label for="uname"><b>Email</b></label><span id="emailerror"></span>
+    <input type="text" placeholder="Enter Email" name="email" id="email" required>
 
     <label for="psw"><b>Password</b></label>
     <input type="password" placeholder="Enter Password" name="password" required>
 
     <button type="submit">Login</button>
-    <label>
-      <input type="checkbox" checked="checked" name="remember"> Remember me
-    </label>
   </div>
 
   <div class="container" style="background-color:#f1f1f1">
-    <button type="button" class="cancelbtn">Cancel</button>
     <span>Create an account? <a href="{{path('signup')}}">Sign Up</a>.</span>
     <span class="psw">Forgot <a href="#">password?</a></span>
   </div>
 
 </form>
+{% endblock %}

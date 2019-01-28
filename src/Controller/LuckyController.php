@@ -7,6 +7,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\UserRegister;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 
 class LuckyController extends AbstractController
@@ -95,6 +96,29 @@ class LuckyController extends AbstractController
     return $this->render('lucky/number.html.twig'); 
 
 }
+
+
+/**
+     * @Route("/validate", name="validate")
+     */
+    public function validate()
+    {
+      $email=$_POST['email'];
+      //$mobile=$_POST['mobile'];
+      //print_r($mobile);
+      $emailcheck = $this->getDoctrine()->getRepository('App:UserRegister')->findOneBy(['email'=>$email]);
+      //$mobilecheck = $this->getDoctrine()->getRepository('App:UserRegister')->findOneBy(['email'=>$mobile]);
+      if($emailcheck){
+        $returnData['exist'] = 1;
+        //print_r($returnData);
+        //return $returnData;
+        
+      }
+      else
+      $returnData['exist'] = 0;
+      //print_r($returnData);exit;
+      return new JsonResponse($returnData);
+    }
 }
 
 

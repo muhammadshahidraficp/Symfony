@@ -1,4 +1,54 @@
-<head>
+{% extends 'base.html.twig' %}
+
+{% block javascripts %} 
+   <script language = "javascript" src = "https://code.jquery.com/jquery-2.2.4.min.js"></script>
+   <script type="text/javascript">
+
+   $("#email").blur(function () 
+    {  
+        var email = $("#email").val();
+       // alert(email);
+        if(email)
+            {
+                $.ajax({
+                type: 'post',
+                dataType:'json',
+                url: 'validate',
+                data: {
+                    email:email
+                    //mobile:mobile
+                },
+                success: function (response) {
+                    var flag=response.exist;
+                    
+                    if(flag==1){
+                        $('#emailerror').css('color', 'red');
+                        $('#email').css('color', 'black');
+                        $('.registerbtn').hide();
+                         $('#emailerror').show();
+                        $('.signin').css('background-color', '#4CAF50');
+
+                    }
+                    else{
+                        $('#email').css('color', 'green');
+                        //$('#mobile').css('color', 'green');
+                        $('#emailerror').hide();
+                        $('.signin').css('background-color', '#f1f1f1');
+                         $('.registerbtn').show();
+                    }
+            }
+        });
+        }
+    });
+   </script>
+{% endblock %}
+
+
+
+
+
+
+{% block stylesheets %}
     <style>
         * {box-sizing: border-box}
 
@@ -53,17 +103,25 @@
         .signin {
             background-color: #f1f1f1;
             text-align: center;
-        }    </style>
-</head>
-<body>
+        } 
+
+        #emailerror{
+            display: none;
+            font-size: 13px;
+            padding-left: 10px;
+        }   
+    </style>
+{% endblock %}
+
+{% block body %}
 <form action="register" method="post">
     <div class="container">
         <h1>Register</h1>
         <p>Please fill in this form to create an account.</p>
         <hr>
-
-        <label for="email"><b>Email</b></label>
-        <input type="text" placeholder="Enter Email" name="email" required>
+        
+        <label for="email"><b>Email</b></label><span id="emailerror">email used for another account</span>
+        <input type="text" placeholder="Enter Email" name="email" id="email" required>
 
         <label for="psw"><b>Name</b></label>
         <input type="text" placeholder="Enter your Name" name="name" required>
@@ -83,4 +141,4 @@
         <p>Already have an account? <a href="{{path('login')}}">Sign in</a>.</p>
     </div>
 </form>
-</body>
+{% endblock %}
