@@ -4,23 +4,26 @@
    <script language = "javascript" src = "https://code.jquery.com/jquery-2.2.4.min.js"></script>
    <script type="text/javascript">
 
-   $("#email").blur(function () 
+   $("#email,#mobile").blur(function () 
     {  
+        //alert("trfftrt");
         var email = $("#email").val();
+        var mobile = $("#mobile").val();
+        
        // alert(email);
-        if(email)
+        if(email && mobile)
             {
                 $.ajax({
                 type: 'post',
                 dataType:'json',
                 url: 'validate',
                 data: {
-                    email:email
-                    //mobile:mobile
+                    email:email,
+                    mobile:mobile
                 },
                 success: function (response) {
                     var flag=response.exist;
-                    
+                    var flag2=response.mobile;
                     if(flag==1){
                         $('#emailerror').css('color', 'red');
                         $('#email').css('color', 'black');
@@ -36,6 +39,10 @@
                         $('.signin').css('background-color', '#f1f1f1');
                          $('.registerbtn').show();
                     }
+                    if(flag2==1)
+                        $('#mobile').css('color', 'red');
+                    else
+                        $('#mobile').css('color', 'green');
             }
         });
         }
@@ -127,7 +134,7 @@
         <input type="text" placeholder="Enter your Name" name="name" required>
 
         <label for="psw"><b>Mobile</b></label>
-        <input type="text" placeholder="Enter your Mobile" name="mobile" required>
+        <input type="text" placeholder="Enter your Mobile" name="mobile" id="mobile" required>
 
         <label for="psw"><b>Password</b></label>
         <input type="password" placeholder="Enter your Password" name="password" required>

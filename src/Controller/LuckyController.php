@@ -104,10 +104,10 @@ class LuckyController extends AbstractController
     public function validate()
     {
       $email=$_POST['email'];
-      //$mobile=$_POST['mobile'];
+      $mobile=$_POST['mobile'];
       //print_r($mobile);
       $emailcheck = $this->getDoctrine()->getRepository('App:UserRegister')->findOneBy(['email'=>$email]);
-      //$mobilecheck = $this->getDoctrine()->getRepository('App:UserRegister')->findOneBy(['email'=>$mobile]);
+      $mobilecheck = $this->getDoctrine()->getRepository('App:UserRegister')->findOneBy(['mobile'=>$mobile]);
       if($emailcheck){
         $returnData['exist'] = 1;
         //print_r($returnData);
@@ -117,8 +117,16 @@ class LuckyController extends AbstractController
       else
       $returnData['exist'] = 0;
       //print_r($returnData);exit;
-      return new JsonResponse($returnData);
+      
+    if($mobilecheck){
+      $returnData['mobile'] = 1;
     }
+    else
+      $returnData['mobile'] = 0;
+return new JsonResponse($returnData);
 }
+}
+
+
 
 
