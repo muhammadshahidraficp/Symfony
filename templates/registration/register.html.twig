@@ -9,7 +9,7 @@
         //alert("trfftrt");
         var email = $("#email").val();
         var mobile = $("#mobile").val();
-        
+        var serialized = $( '#register' ).serialize();
        // alert(email);
         if(email && mobile)
             {
@@ -17,10 +17,7 @@
                 type: 'post',
                 dataType:'json',
                 url: 'validate',
-                data: {
-                    email:email,
-                    mobile:mobile
-                },
+                data: serialized,
                 success: function (response) {
                     var flag=response.exist;
                     var flag2=response.mobile;
@@ -121,7 +118,7 @@
 {% endblock %}
 
 {% block body %}
-<form action="register" method="post">
+<form id="register" action="register" method="post">
     <div class="container">
         <h1>Register</h1>
         <p>Please fill in this form to create an account.</p>

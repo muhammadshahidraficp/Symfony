@@ -101,10 +101,10 @@ class LuckyController extends AbstractController
 /**
      * @Route("/validate", name="validate")
      */
-    public function validate()
+    public function validate(Request $request)
     {
-      $email=$_POST['email'];
-      $mobile=$_POST['mobile'];
+      $email=$request->get('email');
+      $mobile=$request->get('mobile');
       //print_r($mobile);
       $emailcheck = $this->getDoctrine()->getRepository('App:UserRegister')->findOneBy(['email'=>$email]);
       $mobilecheck = $this->getDoctrine()->getRepository('App:UserRegister')->findOneBy(['mobile'=>$mobile]);
