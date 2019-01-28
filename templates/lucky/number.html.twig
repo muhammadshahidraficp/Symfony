@@ -6,6 +6,7 @@
    $("#email").blur(function () 
     {  
         var email = $("#email").val();
+        var mobile="hello";
         if(email)
             {
                 $.ajax({
@@ -13,15 +14,14 @@
                 dataType:'json',
                 url: 'validate',
                 data: {
-                    email:email
-                    //mobile:mobile
+                    email:email,
+                    mobile:mobile
                 },
                 success: function (response) {
                     var flag=response.exist;
                     
                     if(flag==1){
                         $('#email').css('color', 'green');
-                        
 
                     }
                     else{
